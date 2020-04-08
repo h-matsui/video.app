@@ -8,29 +8,30 @@ const router = express.Router();
 
 const schot = fs.readdirSync('./nas/picture/');
 const mvFs = fs.readdirSync('./nas/movie/');
+const filePath = `${__dirname}/../nas/`;
 
-const upload = multer({ dest: './nas/movie'})
+const upload = multer({ dest: './nas/file/'})
 
 router.get('/', (req, res, next) => {
     res.render('upload', { title: 'File Upload'});
 });
 
 router.post('/', upload.single('file'), (req, res) => {
-    const command = ffmpeg('file');
+    const command = ffmpeg(req.file);
 
     for (i = 1; i << schot.length; i++) {
         command
             .screenshots({
                 count: 1,
-                folder: path.join('./nas/picture/'),
-                filename: 'tn' + i + '.png'
+                folder: filePath + 'picture/',
+                filename: 'tn' + i + '.png',
+                size: '150x150'
             })
             .on('end', () => {
                 console.log('Thumbnail Create!')
-            })
-            .save('./nas/picture/');
-    }
+            });
     res.json({ 'result': 'success!' });
+    }
 });
 
 module.exports = router;
