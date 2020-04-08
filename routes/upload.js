@@ -9,14 +9,7 @@ const router = express.Router();
 const schot = fs.readdirSync('./nas/picture/');
 const mvFs = fs.readdirSync('./nas/movie/');
 
-const storage = multer.diskStorage({
-    destination: './nas/movie',
-    filename: function (req, file, cb) {
-        cb(null, file.ofiginalname)
-    }
-})
-
-const upload = multer({ storage: storage})
+const upload = multer({ dest: './nas/movie'})
 
 router.get('/', (req, res, next) => {
     res.render('upload', { title: 'File Upload'});
@@ -35,7 +28,7 @@ router.post('/', upload.single('file'), (req, res) => {
             .on('end', () => {
                 console.log('Thumbnail Create!')
             })
-            .save(schot);
+            .save('./nas/picture/');
     }
     res.json({ 'result': 'success!' });
 });
