@@ -5,7 +5,7 @@
 router.get('/', function(req, res, next) {
   res.render('video', { 
     title: 'All Videos',
-    videoPath: '../nas/file/8df83f9855b9b8248063cc161275e14a.mp4'
+    videoPath: './nas/file/183140076bd8ffff62d748baf80b7670'
    });
 });
 

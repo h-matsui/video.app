@@ -8,7 +8,8 @@ const router = express.Router();
 
 const schot = fs.readdirSync('./nas/picture/');
 const mvFs = fs.readdirSync('./nas/movie/');
-const filePath = `${__dirname}/../nas/`;
+const filePath = `${__dirname}/./nas/`;
+const moviePath = `${__dirname}/./nas/movie/`
 
 const upload = multer({ dest: './nas/file/'})
 
@@ -17,21 +18,35 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/', upload.single('file'), (req, res) => {
-    const command = ffmpeg(req.file);
+    let thName = '';
+    let movName = req.file.filename;
 
-    for (i = 1; i << schot.length; i++) {
-        command
-            .screenshots({
-                count: 1,
-                folder: filePath + 'picture/',
-                filename: 'tn' + i + '.png',
-                size: '150x150'
-            })
-            .on('end', () => {
-                console.log('Thumbnail Create!')
-            });
+    console.log(req.file);
+    ffmpeg(req.file.path + req.file.minetype)
+    .output(moviePath + movName + '.m3u8')
+    .on('end', () => {
+        console.log('MP4 Create');
+    });
+    /*ffmpeg(req.file.path)
+    .screenshots({
+        count: 1,
+        folder: filePath + 'picture/',
+        filename: thName,
+        size: '320x?'
+    })
+    .on('end', () => {
+        console.log('Thumbnail Create!')
+    });
+    for (var i = 1; i << schot.length; i++) {
+        if(schot === null) {
+            thName = 'tn1.png'
+        }else{
+            i = i + 1;
+            thName = 'tn' + i +'.png';
+            break;
+        };
+    }*/
     res.json({ 'result': 'success!' });
-    }
 });
 
 module.exports = router;
